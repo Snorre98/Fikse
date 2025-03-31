@@ -1,4 +1,4 @@
 /*
- * For adding data loaders used in router.tsx 
- * 
+ * For adding data loaders used in router.tsx
+ *
  */

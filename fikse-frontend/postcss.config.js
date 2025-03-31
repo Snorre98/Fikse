@@ -3,8 +3,7 @@
  * Read more here: https://github.com/postcss/autoprefixer
  */
 export default {
-    plugins: {
-      autoprefixer: {},
-    },
-  };
-  
+	plugins: {
+		autoprefixer: {},
+	},
+};

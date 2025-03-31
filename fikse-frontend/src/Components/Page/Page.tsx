@@ -6,5 +6,18 @@ type PageProp = {
 };
 
 export function Page({ children }: PageProp) {
-	return <div className={styles.page_style}>{children}</div>;
+	return (
+		<div className={styles.page_style}>
+			<div
+				style={{
+					backgroundColor: "blue",
+					height: "100%",
+					width: "100%",
+					overflow: "auto",
+				}}
+			>
+				{children}
+			</div>
+		</div>
+	);
 }

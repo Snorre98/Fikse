@@ -11,7 +11,7 @@ export const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route element={<App />}>
 			<Route element={<Outlet />}>
-				<Route path={"/"} element={<Homepage/>} />
+				<Route path={"/"} element={<Homepage />} />
 				<Route path={"/not-home"} element={<div>This is not home</div>} />
 			</Route>
 		</Route>,

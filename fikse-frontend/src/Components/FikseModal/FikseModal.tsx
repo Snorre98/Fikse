@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useRef, useState, type ReactNode } from "react";
+import { Fragment, useCallback, useState, type ReactNode } from "react";
 import { ModalHeader } from "./ModalHeader";
 import { ModalDescription } from "./ModalDescription";
 import { ModalContent } from "./ModalContent";
@@ -13,6 +13,8 @@ type FikseModalProps = {
     onOpen?: () => void;
     onClose?: () => void;
     initialOpen?: boolean;
+    openBtnText?: string;
+    closeBtnText?: string;
 }
 
 export function FikseModal({
@@ -22,10 +24,11 @@ export function FikseModal({
     modalFooter, 
     onOpen, 
     onClose,
-    initialOpen = false
+    initialOpen = false,
+    openBtnText = "Open",
+    closeBtnText= "Close"
 }: FikseModalProps) {
     const [isOpen, setIsOpen] = useState(initialOpen);
-    const modalRef = useRef<HTMLDivElement>(null);
     
     
     const closeModal = useCallback(() => {
@@ -39,13 +42,13 @@ export function FikseModal({
     }, [onOpen]);
     
     if (!isOpen) {
-        return <button type="button" onClick={openModal}>Åpne</button>;
+        return <button type="button" onClick={openModal}>{openBtnText}</button>;
     }
     
     return (
         <Fragment>
             <div className={styles.modal_overlay}>
-                <div ref={modalRef} className={styles.fikse_modal_wrapper}>
+                <div className={styles.fikse_modal_wrapper}>
                     <div className={styles.modal_header_wrapper}>
                         {modalHeader && <ModalHeader className={styles.modal_header}>{modalHeader}</ModalHeader>}
                         <button 
@@ -53,7 +56,7 @@ export function FikseModal({
                             className={styles.modal_close_btn} 
                             onClick={closeModal}
                         >
-                            Lukk
+                            {closeBtnText}
                         </button>
                     </div>
                     {modalDescription && <ModalDescription className={styles.modal_description}>{modalDescription}</ModalDescription>}
@@ -61,7 +64,7 @@ export function FikseModal({
                     {modalFooter && <ModalFooter className={styles.modal_footer}>{modalFooter}</ModalFooter>}
                 </div>
             </div>
-            <button type="button" onClick={openModal}>Åpne</button>
+            <button type="button" onClick={openModal}>{openBtnText}</button>
         </Fragment>
     );
 }

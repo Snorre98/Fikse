@@ -20,6 +20,12 @@
     overflow: auto;
     color: black;
 
+    -ms-overflow-style: none;  /* IE and Edge AI */
+    scrollbar-width: none;  /* Firefox AI */
+    
+    &::-webkit-scrollbar {
+        display: none;  /* Chrome, Safari, Edge AI*/
+    }
 
 
 }

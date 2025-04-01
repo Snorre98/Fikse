@@ -6,7 +6,7 @@ import { ModalFooter } from "./ModalFooter";
 import styles from "./FikseModal.module.scss";
 
 type FikseModalProps = {
-    modalHeader?: ReactNode;
+    modalHeader: ReactNode;
     modalDescription?: ReactNode;
     modalContent?: ReactNode;
     modalFooter?: ReactNode;
@@ -33,14 +33,14 @@ export function FikseModal({modalHeader, modalDescription, modalContent, modalFo
     return (
         <Fragment>
             <dialog ref={modalRef} className={styles.fikse_modal_wrapper}>
-            <button type="button" onClick={() => setIsOpen(false)}>Lukk</button>
-            <div>
-                {modalHeader && <ModalHeader>{modalHeader}</ModalHeader>}
-                {modalDescription && <ModalDescription>{modalDescription}</ModalDescription>}
-                {modalContent && <ModalContent>{modalDescription}</ModalContent>}
-                {modalFooter && <ModalFooter>{modalDescription}</ModalFooter>}
-            </div>
-        </dialog>
+                <div className={styles.modal_header_wrapper}>
+                    {modalHeader && <ModalHeader className={styles.modal_header}>{modalHeader}</ModalHeader>}
+                    <button type="button" className={styles.modal_close_btn} onClick={() => setIsOpen(false)}>Lukk</button>
+                </div>
+                    {modalDescription && <ModalDescription className={styles.modal_description}>{modalDescription}</ModalDescription>}
+                    {modalContent && <ModalContent className={styles.modal_content}>{modalContent}</ModalContent>}
+                    {modalFooter && <ModalFooter className={styles.modal_footer}>{modalFooter}</ModalFooter>}
+            </dialog>
         <button type="button" onClick={() => setIsOpen(true)}>Åpne</button>
         </Fragment>
     )

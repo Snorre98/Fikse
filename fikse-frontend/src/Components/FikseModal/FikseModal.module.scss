@@ -1,5 +1,57 @@
+@use '../../mixins' as *;
+
 .fikse_modal_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 800px;
+    width: 435px;
+
+    @include for-mobile-only {
+        height: 100%;
+        width: 100%;
+    }
+
     border: none;
-    background-color: beige;
-    padding: 0;
+    outline: none;
+    padding: 1rem;
+    background-color: rgb(255, 255, 255);
+    overflow: auto;
+    color: black;
+
+
+
+}
+
+.modal_header_wrapper {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+}
+
+.modal_close_btn {
+    margin: 1rem;
+}
+
+.modal_header{
+    //background-color: green;
+    border-bottom: 1px solid black;
+}
+
+.modal_description {
+    background-color: purple;
+    border-bottom: 1px solid black;
+}
+
+.modal_content {
+    //background-color: red;
+    border-bottom: 1px solid black;
+}
+
+.modal_footer {
+    //background-color: yellow;
+    // align-self: flex-end;
+    justify-self: end;
+    border-bottom: 1px solid black;
 }

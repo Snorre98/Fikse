@@ -2,11 +2,12 @@ import type { ReactNode } from "react"
 
 type ModalHeaderProps = {
     children: ReactNode;
+    className: string;
 }
 
-export function ModalHeader({children}: ModalHeaderProps){
+export function ModalHeader({children, className}: ModalHeaderProps){
     return (
-        <div>
+        <div className={className}>
             {children}
         </div>
     )

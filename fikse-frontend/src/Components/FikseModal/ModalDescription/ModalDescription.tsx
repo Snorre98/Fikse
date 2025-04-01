@@ -2,11 +2,12 @@ import type { ReactNode } from "react"
 
 type ModalDescriptionProps = {
     children: ReactNode;
+    className: string;
 }
 
-export function ModalDescription({children}: ModalDescriptionProps){
+export function ModalDescription({children, className}: ModalDescriptionProps){
     return (
-        <div>
+        <div className={className}>
             {children}
         </div>
     )

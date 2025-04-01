@@ -1,0 +1,7 @@
+@use './constants' as *;
+
+@mixin for-mobile-only{
+    @media (max-width: $mobile-bp-upper) {
+      @content;
+    }
+  }

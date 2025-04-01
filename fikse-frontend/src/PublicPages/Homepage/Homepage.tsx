@@ -4,7 +4,7 @@ export function Homepage() {
 	return (
 		<Page>
 			<FikseModal 
-			modalHeader={<h1 style={{color: "red"}}>TEST MODAL</h1>}
+			modalHeader={<h1>TEST MODAL</h1>}
 			modalDescription={<p>Description description desc
 				Description description desc
 				Description description desc

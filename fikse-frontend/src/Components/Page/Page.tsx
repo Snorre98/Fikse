@@ -10,7 +10,6 @@ export function Page({ children }: PageProp) {
 		<div className={styles.page_style}>
 			<div
 				style={{
-					backgroundColor: "blue",
 					height: "100%",
 					width: "100%",
 					overflow: "auto",

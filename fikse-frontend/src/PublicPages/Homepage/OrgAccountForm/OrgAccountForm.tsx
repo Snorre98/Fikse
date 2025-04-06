@@ -53,14 +53,10 @@ export function OrgAccountForm() {
 		mode: "onChange",
 	});
 
+	
 
-	const [formData, setFormData] = useState<orgAccountFormType>();
-
-	const onSubmit: SubmitHandler<orgAccountFormType> = (data) => {
+	const onSubmit: SubmitHandler<orgAccountFormType> = (data) =>
 		console.log(data);
-		setFormData(data.email);
-	}
-
 	const onError: SubmitErrorHandler<orgAccountFormType> = (errors) =>
 		console.log(errors);
 
@@ -79,12 +75,17 @@ export function OrgAccountForm() {
 		  // Always trigger validation, even for empty values
 		  orgAccountForm.trigger(fieldName).then(isFieldValid => {
 			const fieldState = orgAccountForm.getFieldState(fieldName);
-		
+			
+			console.log(`${fieldName} validation:`, { 
+			  value, 
+			  isFieldValid, 
+			  isTouched: fieldState.isTouched 
+			});
 			
 			setIsValid(isFieldValid);
 			setIsTouched(fieldState.isTouched);
 		  });
-		}, [value]);
+		}, [value, fieldName]);
 		
 		// Also monitor touch events separately
 		// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -106,7 +107,8 @@ export function OrgAccountForm() {
 		  return (
 			<Icon
 			  icon="material-symbols:error-outline"
-			  width="1em"
+			  width="1.5em"
+			  height="1.5em"
 			  color="#d32f2f"
 			/>
 		  );
@@ -117,7 +119,8 @@ export function OrgAccountForm() {
 		  return (
 			<Icon
 			  icon="material-symbols:check-circle-outline"
-			  width="1em"
+			  width="1.5em"
+			  height="1.5em"
 			  color="#2e7d32"
 			/>
 		  );
@@ -142,8 +145,7 @@ export function OrgAccountForm() {
 								control={orgAccountForm.control}
 								rules={{ required: true }}
 								render={({ field }) => (
-									<Input placeholder={"Norway"} type="text" {...field} validationIndicator={<div className={styles.country_vat}>VAT25%</div>}
-									/>
+									<Input placeholder={"Norway"} type="text" {...field} />
 								)}
 							/>
 						</td>
@@ -157,7 +159,6 @@ export function OrgAccountForm() {
 								render={({ field }) => (
 									<Input
 										placeholder={"Org.nr"}
-										label={field.value ? "Organization name" : null} 
 										type="text"
 										{...field}
 										validationIndicator={
@@ -179,8 +180,7 @@ export function OrgAccountForm() {
 								rules={{ required: true }}
 								render={({ field }) => (
 									<Input
-										placeholder={"Busniness name"}
-										label={field.value ? "Busniness name" : null} 
+										placeholder={"Busniess name"}
 										type="text"
 										{...field}
 										validationIndicator={
@@ -204,9 +204,7 @@ export function OrgAccountForm() {
 								render={({ field }) => (
 									<Input
 										placeholder={"Your full name"}
-										label={field.value ? "Full name" : null}
 										type="text"
-							 
 										{...field}
 										validationIndicator={
 											<ValidationIndicator
@@ -228,7 +226,6 @@ export function OrgAccountForm() {
 								render={({ field }) => (
 									<Input
 										placeholder={"+47 Phone number"}
-										label={field.value ? "Phonenumber" : null} 
 										type="text"
 										{...field}
 										validationIndicator={
@@ -251,7 +248,6 @@ export function OrgAccountForm() {
 								render={({ field }) => (
 									<Input
 										placeholder={"Email"}
-										label={field.value ? "Email" : null} 
 										type="text"
 										{...field}
 										validationIndicator={
@@ -283,10 +279,8 @@ export function OrgAccountForm() {
 
 					<tr>
 						<td>
-							<button type="submit" className={styles.submit_btn} onClick={()=>{
-								alert(formData)
-							}}>
-								<span>Fill out the account details to continue</span>
+							<button type="submit" className={styles.submit_btn}>
+								Submit{" "}
 								<Icon
 									icon="material-symbols:chevron-right"
 									width="1em"

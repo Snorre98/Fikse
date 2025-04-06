@@ -4,6 +4,7 @@ import { ModalDescription } from "./ModalDescription";
 import { ModalContent } from "./ModalContent";
 import { ModalFooter } from "./ModalFooter";
 import styles from "./FikseModal.module.scss";
+import classNames from "classnames";
 
 type FikseModalProps = {
     modalHeader: ReactNode;
@@ -15,6 +16,7 @@ type FikseModalProps = {
     initialOpen?: boolean;
     openBtnText?: string;
     closeBtnText?: string;
+    className?: string;
 }
 
 export function FikseModal({
@@ -26,7 +28,8 @@ export function FikseModal({
     onClose,
     initialOpen = false,
     openBtnText = "Open",
-    closeBtnText= "Close"
+    closeBtnText= "Close",
+    className,
 }: FikseModalProps) {
     const [isOpen, setIsOpen] = useState(initialOpen);
     
@@ -47,17 +50,17 @@ export function FikseModal({
     
     return (
         <Fragment>
-            <div className={styles.modal_overlay}>
+            <div className={classNames(styles.modal_overlay, className)}>
                 <div className={styles.fikse_modal_wrapper}>
                     <div className={styles.modal_header_wrapper}>
-                        {modalHeader && <ModalHeader className={styles.modal_header}>{modalHeader}</ModalHeader>}
-                        <button 
+                        {modalHeader && <ModalHeader className={styles.modal_header}>{modalHeader}<button 
                             type="button" 
                             className={styles.modal_close_btn} 
                             onClick={closeModal}
                         >
                             {closeBtnText}
-                        </button>
+                        </button></ModalHeader>}
+                        
                     </div>
                     {modalDescription && <ModalDescription className={styles.modal_description}>{modalDescription}</ModalDescription>}
                     {modalContent && <ModalContent className={styles.modal_content}>{modalContent}</ModalContent>}

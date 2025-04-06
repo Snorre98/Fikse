@@ -1,45 +1,20 @@
 import { FikseModal, Page } from "../../Components";
+import { OrgAccountForm } from "./OrgAccountForm";
+import styles from "./Homepage.module.scss";
 
 export function Homepage() {
-	return (
-		<Page>
-			<FikseModal 
-			modalHeader={<h1>TEST MODAL</h1>}
-			modalDescription={<p>Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-				Description description desc
-			</p>}
-			modalContent={
-				<div>
-					<div>CONTENT</div>
-					<div>CONTENT</div>
-					<div>CONTENT</div>
-					<div>CONTENT</div>
-				</div>
-			}
-			modalFooter={
-				<div>
-					<div>FOOTER</div>
-					<div>FOOTER</div>
-					<div>FOOTER</div>
-					<div>FOOTER</div>
-					<div>FOOTER</div>
-					<div>FOOTER</div>
-				</div>
-			}
-			/>
-		</Page>
-	);
+  return (
+    <Page>
+      <FikseModal
+        className={styles.scale}
+        modalHeader={<h2 className={styles.org_account_form_modal_header}>Create account</h2>}
+        modalDescription={<p className={styles.org_account_form_modal_description}>Start your journey towards more repair and less work.</p>}
+        modalContent={
+          <div className={styles.modal_form_wrapper}>
+            <OrgAccountForm />
+          </div>
+        }
+      />
+    </Page>
+  );
 }

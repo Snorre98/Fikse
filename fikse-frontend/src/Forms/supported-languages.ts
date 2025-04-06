@@ -1,0 +1,1 @@
+export const SUPPORTED_LANGUAGES = ["Norwegian", "English", "Swedish", "Danish", "Finish", "German"] as const;

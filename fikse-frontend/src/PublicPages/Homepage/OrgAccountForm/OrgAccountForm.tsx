@@ -105,9 +105,12 @@ export function OrgAccountForm() {
 					<tr>
 						<td>
 							<div className={styles.input_wrapper}>
-								<label htmlFor="country" className={styles.input_label}>
-									{"Country"}
-								</label>
+								{orgAccountForm.getValues("country") && (
+									<label htmlFor="country" className={styles.input_label}>
+										{"Country"}
+									</label>
+								)}
+
 								<Controller
 									name="country"
 									control={orgAccountForm.control}
@@ -124,9 +127,12 @@ export function OrgAccountForm() {
 					<tr>
 						<td>
 							<div className={styles.input_wrapper}>
-								<label htmlFor="org_number" className={styles.input_label}>
-									{"Org. Number"}
-								</label>
+								{orgAccountForm.getValues("org_number") && (
+									<label htmlFor="org_number" className={styles.input_label}>
+										{"Org. Number"}
+									</label>
+								)}
+
 								<Controller
 									name="org_number"
 									control={orgAccountForm.control}
@@ -142,9 +148,12 @@ export function OrgAccountForm() {
 					<tr>
 						<td>
 							<div className={styles.input_wrapper}>
-								<label htmlFor="business_name" className={styles.input_label}>
-									{"Business name"}
-								</label>
+								{orgAccountForm.getValues("business_name") && (
+									<label htmlFor="business_name" className={styles.input_label}>
+										{"Business name"}
+									</label>
+								)}
+
 								<Controller
 									name="business_name"
 									control={orgAccountForm.control}
@@ -165,9 +174,15 @@ export function OrgAccountForm() {
 					<tr>
 						<td>
 							<div className={styles.input_wrapper}>
-								<label htmlFor="person_fullname" className={styles.input_label}>
-									{"Full name"}
-								</label>
+								{orgAccountForm.getValues("person_fullname") && (
+									<label
+										htmlFor="person_fullname"
+										className={styles.input_label}
+									>
+										{"Full name"}
+									</label>
+								)}
+
 								<Controller
 									name="person_fullname"
 									control={orgAccountForm.control}
@@ -187,9 +202,12 @@ export function OrgAccountForm() {
 					<tr>
 						<td>
 							<div className={styles.input_wrapper}>
-								<label htmlFor="phonenumber" className={styles.input_label}>
-									{"Phonenumber"}
-								</label>
+								{orgAccountForm.getValues("phonenumber") && (
+									<label htmlFor="phonenumber" className={styles.input_label}>
+										{"Phonenumber"}
+									</label>
+								)}
+
 								<Controller
 									name="phonenumber"
 									control={orgAccountForm.control}
@@ -209,9 +227,11 @@ export function OrgAccountForm() {
 					<tr>
 						<td>
 							<div className={styles.input_wrapper}>
-								<label htmlFor="email" className={styles.input_label}>
-									{"Email"}
-								</label>
+								{orgAccountForm.getValues("email") && (
+									<label htmlFor="email" className={styles.input_label}>
+										{"Email"}
+									</label>
+								)}
 								<Controller
 									name="email"
 									control={orgAccountForm.control}
@@ -227,9 +247,12 @@ export function OrgAccountForm() {
 					<tr>
 						<td>
 							<div className={styles.input_wrapper}>
-								<label htmlFor="language" className={styles.input_label}>
-									{"Language"}
-								</label>
+								{orgAccountForm.getValues("language") && (
+									<label htmlFor="language" className={styles.input_label}>
+										{"Language"}
+									</label>
+								)}
+
 								<Controller
 									name="language"
 									control={orgAccountForm.control}

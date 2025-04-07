@@ -1,13 +1,8 @@
 import { FikseModal, Page } from "../../Components";
 import { OrgAccountForm } from "./OrgAccountForm";
 import styles from "./Homepage.module.scss";
-import { Toast } from "../../Components/Toast/Toast";
-import { useToast } from "../../Context/ToastContext/ToastContext";
 
 export function Homepage() {
-
-
-  const { showToast } = useToast();
   
   return (
     <Page>

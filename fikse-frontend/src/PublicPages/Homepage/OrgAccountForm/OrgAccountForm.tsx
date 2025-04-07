@@ -1,6 +1,5 @@
 import {
 	Controller,
-	FieldError,
 	type SubmitErrorHandler,
 	type SubmitHandler,
 	useForm,
@@ -23,13 +22,15 @@ import { SUPPORTED_LANGUAGES } from "../../../Forms/supported-languages";
 import { formatSelectOptions, Select } from "../../../Components/Select/Select";
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { postBusinessAccount } from "../../../api/business-account-api/business-account";
 
 const orgAccountFormSchema = z.object({
 	country: COUNTRY,
-	orgNumber: ORG_NR,
-	orgName: ORG_NAME,
-	fullName: FULL_NAME,
-	phoneNumber: PHONE_NR,
+	org_number: ORG_NR,
+	business_name: ORG_NAME,
+	person_fullname: FULL_NAME,
+	phonenumber: PHONE_NR,
 	email: EMAIL,
 	language: LANGUAGE,
 });
@@ -39,10 +40,10 @@ type orgAccountFormType = z.infer<typeof orgAccountFormSchema>;
 export function OrgAccountForm() {
 	const initialData: Partial<orgAccountFormType> = {
 		country: "Norway",
-		orgNumber: "",
-		orgName: "",
-		fullName: "",
-		phoneNumber: "",
+		org_number: "",
+		business_name: "",
+		person_fullname: "",
+		phonenumber: "",
 		email: "",
 		language: "Norwegian",
 	};
@@ -53,10 +54,15 @@ export function OrgAccountForm() {
 		mode: "onChange",
 	});
 
-	
 
-	const onSubmit: SubmitHandler<orgAccountFormType> = (data) =>
-		console.log(data);
+	const [formData, setFormData] = useState<orgAccountFormType>();
+
+	const onSubmit: SubmitHandler<orgAccountFormType> = (data) => {
+		setFormData(data);
+		create.mutate(data);
+		console.log("ran")
+	}
+
 	const onError: SubmitErrorHandler<orgAccountFormType> = (errors) =>
 		console.log(errors);
 
@@ -75,17 +81,12 @@ export function OrgAccountForm() {
 		  // Always trigger validation, even for empty values
 		  orgAccountForm.trigger(fieldName).then(isFieldValid => {
 			const fieldState = orgAccountForm.getFieldState(fieldName);
-			
-			console.log(`${fieldName} validation:`, { 
-			  value, 
-			  isFieldValid, 
-			  isTouched: fieldState.isTouched 
-			});
+		
 			
 			setIsValid(isFieldValid);
 			setIsTouched(fieldState.isTouched);
 		  });
-		}, [value, fieldName]);
+		}, [value]);
 		
 		// Also monitor touch events separately
 		// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -107,8 +108,7 @@ export function OrgAccountForm() {
 		  return (
 			<Icon
 			  icon="material-symbols:error-outline"
-			  width="1.5em"
-			  height="1.5em"
+			  width="1em"
 			  color="#d32f2f"
 			/>
 		  );
@@ -119,8 +119,7 @@ export function OrgAccountForm() {
 		  return (
 			<Icon
 			  icon="material-symbols:check-circle-outline"
-			  width="1.5em"
-			  height="1.5em"
+			  width="1em"
 			  color="#2e7d32"
 			/>
 		  );
@@ -128,6 +127,16 @@ export function OrgAccountForm() {
 		
 		return null;
 	  };
+
+	  const create = useMutation({
+		mutationFn: postBusinessAccount,
+		// onSuccess: () => {
+		// 	console.log("SUCCESS");
+		// },
+		// onError: () => {
+		// 	console.log("ERROR")
+		// }
+	  })
 
 	return (
 		<form
@@ -141,11 +150,13 @@ export function OrgAccountForm() {
 						<td>
 							<Controller
 								name="country"
-								disabled={true}
+								//disabled={true}
 								control={orgAccountForm.control}
 								rules={{ required: true }}
+								defaultValue="Norway"
 								render={({ field }) => (
-									<Input placeholder={"Norway"} type="text" {...field} />
+									<Input placeholder={"Norway"} type="text" {...field} validationIndicator={<div className={styles.country_vat}>VAT25%</div>}
+									/>
 								)}
 							/>
 						</td>
@@ -153,17 +164,18 @@ export function OrgAccountForm() {
 					<tr>
 						<td>
 							<Controller
-								name="orgNumber"
+								name="org_number"
 								control={orgAccountForm.control}
 								rules={{ required: true }}
 								render={({ field }) => (
 									<Input
 										placeholder={"Org.nr"}
+										label={field.value ? "Organization name" : null} 
 										type="text"
 										{...field}
 										validationIndicator={
 											<ValidationIndicator
-												fieldName="orgNumber"
+												fieldName="org_number"
 												control={orgAccountForm.control}
 											/>
 										}
@@ -175,17 +187,18 @@ export function OrgAccountForm() {
 					<tr>
 						<td>
 							<Controller
-								name="orgName"
+								name="business_name"
 								control={orgAccountForm.control}
 								rules={{ required: true }}
 								render={({ field }) => (
 									<Input
-										placeholder={"Busniess name"}
+										placeholder={"Busniness name"}
+										label={field.value ? "Busniness name" : null} 
 										type="text"
 										{...field}
 										validationIndicator={
 											<ValidationIndicator
-												fieldName="orgName"
+												fieldName="business_name"
 												control={orgAccountForm.control}
 											/>
 										}
@@ -198,17 +211,19 @@ export function OrgAccountForm() {
 					<tr>
 						<td>
 							<Controller
-								name="fullName"
+								name="person_fullname"
 								control={orgAccountForm.control}
 								rules={{ required: true }}
 								render={({ field }) => (
 									<Input
 										placeholder={"Your full name"}
+										label={field.value ? "Full name" : null}
 										type="text"
+							 
 										{...field}
 										validationIndicator={
 											<ValidationIndicator
-												fieldName="fullName"
+												fieldName="person_fullname"
 												control={orgAccountForm.control}
 											/>
 										}
@@ -220,17 +235,18 @@ export function OrgAccountForm() {
 					<tr>
 						<td>
 							<Controller
-								name="phoneNumber"
+								name="phonenumber"
 								control={orgAccountForm.control}
 								rules={{ required: true }}
 								render={({ field }) => (
 									<Input
 										placeholder={"+47 Phone number"}
+										label={field.value ? "Phonenumber" : null} 
 										type="text"
 										{...field}
 										validationIndicator={
 											<ValidationIndicator
-												fieldName="phoneNumber"
+												fieldName="phonenumber"
 												control={orgAccountForm.control}
 											/>
 										}
@@ -248,6 +264,7 @@ export function OrgAccountForm() {
 								render={({ field }) => (
 									<Input
 										placeholder={"Email"}
+										label={field.value ? "Email" : null} 
 										type="text"
 										{...field}
 										validationIndicator={
@@ -279,8 +296,10 @@ export function OrgAccountForm() {
 
 					<tr>
 						<td>
-							<button type="submit" className={styles.submit_btn}>
-								Submit{" "}
+							<button type="submit" className={styles.submit_btn} onClick={()=>{
+								alert(formData)
+							}}>
+								<span>Fill out the account details to continue</span>
 								<Icon
 									icon="material-symbols:chevron-right"
 									width="1em"

@@ -59,3 +59,18 @@
     width: fit-content;
     translate: 0 5px;
 }
+
+.input_wrapper {
+    display: flex;
+    flex-direction: row;
+    padding: 0.10rem;
+}
+
+.input_icon {
+    background-color: rgb(253, 247, 209);
+}
+
+.input_label {
+    position: absolute;
+    font-size: 7px;
+}

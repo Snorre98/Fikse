@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { validateNorwegianOrgNumber } from "./utils";
 import { SUPPORTED_LANGUAGES } from "./supported-languages";
-import errorMap from "zod/locales/en.js";
 
 // https://github.com/mnestorov/regex-patterns#norway
 // - `^NO\d{9}MVA$`

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import styles from "./Input.module.scss";
 import classNames from "classnames";
 
@@ -9,8 +9,6 @@ interface PrimitiveInputProps
 	> {
 	className?: string;
 	type?: React.HTMLInputTypeAttribute;
-	validationIndicator?: ReactNode;
-	label?:string | null;
 }
 
 /* For controlled input. This requires value, as value MUST come from the controlling component */
@@ -29,10 +27,7 @@ interface UncontrolledInputProps extends PrimitiveInputProps {
 export type InputProps = ControlledInputProps | UncontrolledInputProps;
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-	(
-		{ className, type, value, defaultValue, validationIndicator, label, ...props },
-		ref,
-	) => {
+	({ className, type, value, defaultValue, ...props }, ref) => {
 		const isControlled = value !== undefined;
 
 		const styleMap: Record<string, string> = {
@@ -43,21 +38,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 		};
 
 		return (
-			<div className={styles.input_wrapper}>
-				{
-					(label) && <label htmlFor={props.name} className={styles.input_label}>{label}</label>
-				}
-				
-				<input
-					ref={ref}
-					type={type}
-					className={classNames(type && styleMap[type], className)}
-					value={isControlled ? value : undefined}
-					defaultValue={!isControlled ? defaultValue : undefined}
-					{...props}
-				/>
-				{validationIndicator && <div className={styles.input_icon}>{validationIndicator}</div>}
-			</div>
+			<input
+				ref={ref}
+				type={type}
+				className={classNames(type && styleMap[type], className)}
+				value={isControlled ? value : undefined}
+				defaultValue={!isControlled ? defaultValue : undefined}
+				{...props}
+			/>
 		);
 	},
 );

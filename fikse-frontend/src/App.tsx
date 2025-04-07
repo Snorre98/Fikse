@@ -1,8 +1,13 @@
 import "./App.scss";
 import { Outlet } from "react-router";
+import { ToastProvider } from "./Context/ToastContext/ToastContext";
 
 function App() {
-	return <Outlet />;
+	return (
+		<ToastProvider>
+			<Outlet />
+		</ToastProvider>
+	);
 }
 
 export default App;

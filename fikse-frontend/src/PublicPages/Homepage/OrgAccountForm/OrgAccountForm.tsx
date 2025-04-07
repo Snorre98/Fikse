@@ -23,6 +23,7 @@ import { formatSelectOptions, Select } from "../../../Components/Select/Select";
 import { Icon } from "@iconify/react";
 import { useMutation } from "@tanstack/react-query";
 import { postBusinessAccount } from "../../../api/business-account-api/business-account";
+import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
 
 const orgAccountFormSchema = z.object({
 	country: COUNTRY,
@@ -61,11 +62,11 @@ export function OrgAccountForm() {
 	const onError: SubmitErrorHandler<orgAccountFormType> = (errors) =>
 		console.log(errors);
 
-	const create = useMutation({mutationFn: postBusinessAccount});
+	const create = useMutation({ mutationFn: postBusinessAccount });
 
 	const { dirtyFields, errors } = useFormState({
-			control: orgAccountForm.control
-	});	
+		control: orgAccountForm.control,
+	});
 
 	const validationIndicator = (fieldName: keyof orgAccountFormType) => {
 		const hasError = errors[fieldName];
@@ -77,6 +78,7 @@ export function OrgAccountForm() {
 					icon="material-symbols:error-outline"
 					width="1em"
 					color="#d32f2f"
+					className={styles.input_icon}
 				/>
 			);
 		}
@@ -86,6 +88,7 @@ export function OrgAccountForm() {
 					icon="material-symbols:check-circle-outline"
 					width="1em"
 					color="#2e7d32"
+					className={styles.input_icon}
 				/>
 			);
 		}
@@ -101,123 +104,145 @@ export function OrgAccountForm() {
 				<tbody className={styles.form_table_body}>
 					<tr>
 						<td>
-							<Controller
-								name="country"
-								control={orgAccountForm.control}
-								rules={{ required: true }}
-								defaultValue="Norway"
-								render={({ field }) => (
-									<Input placeholder={"Norway"} type="text" {...field} />
-								)}
-							/>
-							{validationIndicator("country")}
+							<div className={styles.input_wrapper}>
+								<label htmlFor="country" className={styles.input_label}>
+									{"Country"}
+								</label>
+								<Controller
+									name="country"
+									control={orgAccountForm.control}
+									rules={{ required: true }}
+									defaultValue="Norway"
+									render={({ field }) => (
+										<Input placeholder={"Norway"} type="text" {...field} />
+									)}
+								/>
+								{validationIndicator("country")}
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<Controller
-								name="org_number"
-								control={orgAccountForm.control}
-								rules={{ required: true }}
-								render={({ field }) => (
-									<Input
-										placeholder={"Org.nr"}
-										label={field.value ? "Organization name" : null}
-										type="text"
-										{...field}
-									/>
-								)}
-							/>
-							{validationIndicator("org_number")}
+							<div className={styles.input_wrapper}>
+								<label htmlFor="org_number" className={styles.input_label}>
+									{"Org. Number"}
+								</label>
+								<Controller
+									name="org_number"
+									control={orgAccountForm.control}
+									rules={{ required: true }}
+									render={({ field }) => (
+										<Input placeholder={"Org. Number"} type="text" {...field} />
+									)}
+								/>
+								{validationIndicator("org_number")}
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<Controller
-								name="business_name"
-								control={orgAccountForm.control}
-								rules={{ required: true }}
-								render={({ field }) => (
-									<Input
-										placeholder={"Busniness name"}
-										label={field.value ? "Busniness name" : null}
-										type="text"
-										{...field}
-									/>
-								)}
-							/>
-							{validationIndicator("business_name")}
+							<div className={styles.input_wrapper}>
+								<label htmlFor="business_name" className={styles.input_label}>
+									{"Business name"}
+								</label>
+								<Controller
+									name="business_name"
+									control={orgAccountForm.control}
+									rules={{ required: true }}
+									render={({ field }) => (
+										<Input
+											placeholder={"Busniness name"}
+											type="text"
+											{...field}
+										/>
+									)}
+								/>
+								{validationIndicator("business_name")}
+							</div>
 						</td>
 					</tr>
 
 					<tr>
 						<td>
-							<Controller
-								name="person_fullname"
-								control={orgAccountForm.control}
-								rules={{ required: true }}
-								render={({ field }) => (
-									<Input
-										placeholder={"Your full name"}
-										label={field.value ? "Full name" : null}
-										type="text"
-										{...field}
-									/>
-								)}
-							/>
-							{validationIndicator("person_fullname")}
+							<div className={styles.input_wrapper}>
+								<label htmlFor="person_fullname" className={styles.input_label}>
+									{"Full name"}
+								</label>
+								<Controller
+									name="person_fullname"
+									control={orgAccountForm.control}
+									rules={{ required: true }}
+									render={({ field }) => (
+										<Input
+											placeholder={"Your full name"}
+											type="text"
+											{...field}
+										/>
+									)}
+								/>
+								{validationIndicator("person_fullname")}
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<Controller
-								name="phonenumber"
-								control={orgAccountForm.control}
-								rules={{ required: true }}
-								render={({ field }) => (
-									<Input
-										placeholder={"+47 Phone number"}
-										label={field.value ? "Phonenumber" : null}
-										type="text"
-										{...field}
-									/>
-								)}
-							/>
-							{validationIndicator("phonenumber")}
+							<div className={styles.input_wrapper}>
+								<label htmlFor="phonenumber" className={styles.input_label}>
+									{"Phonenumber"}
+								</label>
+								<Controller
+									name="phonenumber"
+									control={orgAccountForm.control}
+									rules={{ required: true }}
+									render={({ field }) => (
+										<Input
+											placeholder={"+47 Phone number"}
+											type="text"
+											{...field}
+										/>
+									)}
+								/>
+								{validationIndicator("phonenumber")}
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<Controller
-								name="email"
-								control={orgAccountForm.control}
-								rules={{ required: true }}
-								render={({ field }) => (
-									<Input
-										placeholder={"Email"}
-										label={field.value ? "Email" : null}
-										type="text"
-										{...field}
-									/>
-								)}
-							/>
-							{validationIndicator("email")}
+							<div className={styles.input_wrapper}>
+								<label htmlFor="email" className={styles.input_label}>
+									{"Email"}
+								</label>
+								<Controller
+									name="email"
+									control={orgAccountForm.control}
+									rules={{ required: true }}
+									render={({ field }) => (
+										<Input placeholder={"Email"} type="text" {...field} />
+									)}
+								/>
+								{validationIndicator("email")}
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<Controller
-								name="language"
-								control={orgAccountForm.control}
-								rules={{ required: true }}
-								render={({ field }) => (
-									<Select
-										options={formatSelectOptions(SUPPORTED_LANGUAGES)}
-										{...field}
-									/>
-								)}
-							/>
-							{validationIndicator("language")}
+							<div className={styles.input_wrapper}>
+								<label htmlFor="language" className={styles.input_label}>
+									{"Language"}
+								</label>
+								<Controller
+									name="language"
+									control={orgAccountForm.control}
+									rules={{ required: true }}
+									render={({ field }) => (
+										<Select
+											options={formatSelectOptions(SUPPORTED_LANGUAGES)}
+											{...field}
+										/>
+									)}
+								/>
+								{validationIndicator("language")}
+							</div>
 						</td>
 					</tr>
 

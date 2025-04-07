@@ -23,7 +23,6 @@ import { formatSelectOptions, Select } from "../../../Components/Select/Select";
 import { Icon } from "@iconify/react";
 import { useMutation } from "@tanstack/react-query";
 import { postBusinessAccount } from "../../../api/business-account-api/business-account";
-import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
 
 const orgAccountFormSchema = z.object({
 	country: COUNTRY,
@@ -246,12 +245,12 @@ export function OrgAccountForm() {
 					</tr>
 					<tr>
 						<td>
-							<div className={styles.input_wrapper}>
-								{orgAccountForm.getValues("language") && (
-									<label htmlFor="language" className={styles.input_label}>
-										{"Language"}
-									</label>
-								)}
+						<div className={styles.input_wrapper}>
+							{orgAccountForm.getValues("language") && (
+								<label htmlFor="language" className={styles.input_label}>
+									{"Language"}
+								</label>
+							)}
 
 								<Controller
 									name="language"

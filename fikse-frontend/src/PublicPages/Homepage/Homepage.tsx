@@ -9,15 +9,6 @@ export function Homepage() {
 
   const { showToast } = useToast();
   
-  const handleAccountCreation = () => {
-    showToast(
-      "Account Created", 
-      "Your account was successfully created!", 
-      "success"
-    );
-  };
-
-  
   return (
     <Page>
 
@@ -32,8 +23,6 @@ export function Homepage() {
         }
       />
 
-      <button type="button" onClick={() =>showToast("test toast", "this is a test", "info")}>Toast</button>
-  
     </Page>
   );
 }

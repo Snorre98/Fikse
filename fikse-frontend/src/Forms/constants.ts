@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { validateNorwegianOrgNumber } from "./utils";
-import { SUPPORTED_LANGUAGES } from "./supported-languages";
 
 // https://github.com/mnestorov/regex-patterns#norway
 // - `^NO\d{9}MVA$`
@@ -8,7 +7,12 @@ import { SUPPORTED_LANGUAGES } from "./supported-languages";
 // - `^\+47[2-9][0-9]{7,8}$`
 const PHONENUMBER_REGEX = /^(0047|\+47|47)?[2-9]\d{7}$/;
 
-export const COUNTRY = z.string().min(1, "Country is required");
+export const COUNTRY = z
+  .string()
+  .min(1, "Country is required")
+  .refine((val) => val !== "Country", {
+    message: "Please select a country"
+  });
 export const ORG_NR = z
 	.string()
 	.min(1, "Organization number is required")
@@ -24,4 +28,9 @@ export const EMAIL = z
 	.min(1, "Email is required")
 	.email("Invalid email format");
 
-export const LANGUAGE = z.enum(SUPPORTED_LANGUAGES, {errorMap: () => ({message: "Select a supported language"})})
+	export const LANGUAGE = z
+	.string()
+	.min(1, "Language is required")
+	.refine((val) => val !== "Language", {
+	  message: "Please select a language"
+	});

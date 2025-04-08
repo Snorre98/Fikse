@@ -9,7 +9,7 @@ interface SelectOptionType {
 
 interface PrimitiveSelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "value" | "defaultValue"> {
   className?: string;
-  options: SelectOptionType[];
+  options?: SelectOptionType[];
 }
 
 /* For controlled select. This requires value, as value MUST come from the controlling component */
@@ -62,9 +62,13 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 
 Select.displayName = "Select";
 
-export const formatSelectOptions = (options: readonly string[]) => {
-    return options.map(option => ({
-      value: option,
-      label: option
-    }));
-  };
+export const formatSelectOptionsWithLabels = <T,>(
+  items: readonly T[], 
+  valueExtractor: (item: T) => string,
+  labelExtractor: (item: T) => string
+) => {
+  return items.map(item => ({
+    value: valueExtractor(item),
+    label: labelExtractor(item)
+  }));
+};

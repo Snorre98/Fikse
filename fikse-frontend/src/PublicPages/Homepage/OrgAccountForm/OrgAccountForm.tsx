@@ -18,12 +18,17 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../../Components";
 import styles from "./OrgAccountForm.module.scss";
-import { SUPPORTED_LANGUAGES } from "../../../Forms/supported-languages";
-import { formatSelectOptions, Select } from "../../../Components/Select/Select";
+import {
+	formatSelectOptionsWithLabels,
+	Select,
+} from "../../../Components/Select/Select";
 import { Icon } from "@iconify/react";
-import { useMutation } from "@tanstack/react-query";
-import { postBusinessAccount } from "../../../api/business-account-api/business-account";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { postBusinessAccount } from "../../../api/business-account-api/public-business-account-api";
 import { useToast } from "../../../Context/ToastContext/ToastContext";
+import { getCountryVat } from "../../../api/country-vat-api/public-coutry-vat-api";
+import { getLanguages } from "../../../api/languages-api/public-languages-api";
+import { useEffect } from "react";
 
 const orgAccountFormSchema = z.object({
 	country: COUNTRY,
@@ -39,13 +44,13 @@ type orgAccountFormType = z.infer<typeof orgAccountFormSchema>;
 
 export function OrgAccountForm() {
 	const initialData: Partial<orgAccountFormType> = {
-		country: "Norway",
+		country: "Country",
 		org_number: "",
 		business_name: "",
 		person_fullname: "",
 		phonenumber: "",
 		email: "",
-		language: "Norwegian",
+		language: "Language",
 	};
 
 	const orgAccountForm = useForm<orgAccountFormType>({
@@ -56,6 +61,7 @@ export function OrgAccountForm() {
 	});
 
 	const onSubmit: SubmitHandler<orgAccountFormType> = (data) => {
+		console.log(data);
 		create.mutate(data);
 	};
 
@@ -64,26 +70,20 @@ export function OrgAccountForm() {
 
 	const { showToast } = useToast();
 
-	const create = useMutation(
-		{ mutationFn: postBusinessAccount, 
-			onSuccess() {
-				showToast(
-					"Account Created", 
-					"Your account was successfully created!", 
-					"success"
-				  );
-			},
-			onError(error) {
-				const msg = error.message;
-				showToast(
-					"Error", 
-					msg, 
-					"error"
-				  );
-			},
-
-		 }
-	);
+	const create = useMutation({
+		mutationFn: postBusinessAccount,
+		onSuccess() {
+			showToast(
+				"Account Created",
+				"Your account was successfully created!",
+				"success",
+			);
+		},
+		onError(error) {
+			const msg = error.message;
+			showToast("Error", msg, "error");
+		},
+	});
 
 	const { dirtyFields, errors } = useFormState({
 		control: orgAccountForm.control,
@@ -115,6 +115,16 @@ export function OrgAccountForm() {
 		}
 	};
 
+	const { data: countrVat, isLoading: loadingCountryVat } = useQuery({
+		queryKey: ["coutry-vat"],
+		queryFn: getCountryVat,
+	});
+
+	const { data: languages, isLoading: loadingLanguages } = useQuery({
+		queryKey: ["languages"],
+		queryFn: getLanguages,
+	});
+
 	return (
 		<form
 			onSubmit={orgAccountForm.handleSubmit(onSubmit, onError)}
@@ -131,15 +141,30 @@ export function OrgAccountForm() {
 										{"Country"}
 									</label>
 								)}
-
 								<Controller
 									name="country"
 									control={orgAccountForm.control}
 									rules={{ required: true }}
-									defaultValue="Norway"
-									render={({ field }) => (
-										<Input placeholder={"Norway"} type="text" {...field} />
-									)}
+									render={({ field }) =>
+										loadingCountryVat ? (
+											// Show loading state or placeholder
+											<Select {...field} />
+										) : (
+											<Select
+												options={[
+													{ value: "Country", label: "Country" }, // Placeholder option
+													...(countrVat?.data
+														? formatSelectOptionsWithLabels(
+																countrVat.data,
+																(item) => item.country,
+																(item) => `${item.country} - VAT${item.vat}%`,
+															)
+														: []),
+												]}
+												{...field}
+											/>
+										)
+									}
 								/>
 								{validationIndicator("country")}
 							</div>
@@ -267,24 +292,38 @@ export function OrgAccountForm() {
 					</tr>
 					<tr>
 						<td>
-						<div className={styles.input_wrapper}>
-							{orgAccountForm.getValues("language") && (
-								<label htmlFor="language" className={styles.input_label}>
-									{"Language"}
-								</label>
-							)}
-
+							<div className={styles.input_wrapper}>
+								{orgAccountForm.getValues("language") && (
+									<label htmlFor="language" className={styles.input_label}>
+										{"Language"}
+									</label>
+								)}
 								<Controller
 									name="language"
 									control={orgAccountForm.control}
 									rules={{ required: true }}
-									render={({ field }) => (
-										<Select
-											options={formatSelectOptions(SUPPORTED_LANGUAGES)}
-											{...field}
-										/>
-									)}
+									render={({ field }) =>
+										loadingLanguages ? (
+											// Show loading state or placeholder
+											<Select {...field} />
+										) : (
+											<Select
+												options={[
+													{ value: "Language", label: "Language" }, // Placeholder option
+													...(languages?.data
+														? formatSelectOptionsWithLabels(
+																languages.data,
+																(item) => item.language,
+																(item) => item.language,
+															)
+														: []),
+												]}
+												{...field}
+											/>
+										)
+									}
 								/>
+
 								{validationIndicator("language")}
 							</div>
 						</td>

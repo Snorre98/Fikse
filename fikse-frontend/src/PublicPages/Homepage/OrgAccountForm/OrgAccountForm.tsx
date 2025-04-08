@@ -23,6 +23,7 @@ import { formatSelectOptions, Select } from "../../../Components/Select/Select";
 import { Icon } from "@iconify/react";
 import { useMutation } from "@tanstack/react-query";
 import { postBusinessAccount } from "../../../api/business-account-api/business-account";
+import { useToast } from "../../../Context/ToastContext/ToastContext";
 
 const orgAccountFormSchema = z.object({
 	country: COUNTRY,
@@ -61,7 +62,28 @@ export function OrgAccountForm() {
 	const onError: SubmitErrorHandler<orgAccountFormType> = (errors) =>
 		console.log(errors);
 
-	const create = useMutation({ mutationFn: postBusinessAccount });
+	const { showToast } = useToast();
+
+	const create = useMutation(
+		{ mutationFn: postBusinessAccount, 
+			onSuccess() {
+				showToast(
+					"Account Created", 
+					"Your account was successfully created!", 
+					"success"
+				  );
+			},
+			onError(error) {
+				const msg = error.message;
+				showToast(
+					"Error", 
+					msg, 
+					"error"
+				  );
+			},
+
+		 }
+	);
 
 	const { dirtyFields, errors } = useFormState({
 		control: orgAccountForm.control,

@@ -3,8 +3,10 @@ import { OrgAccountForm } from "./OrgAccountForm";
 import styles from "./Homepage.module.scss";
 
 export function Homepage() {
+  
   return (
     <Page>
+
       <FikseModal
         className={styles.scale}
         modalHeader={<h2 className={styles.org_account_form_modal_header}>Create account</h2>}
@@ -15,6 +17,7 @@ export function Homepage() {
           </div>
         }
       />
+
     </Page>
   );
 }

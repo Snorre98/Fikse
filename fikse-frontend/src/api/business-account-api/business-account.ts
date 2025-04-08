@@ -35,12 +35,15 @@ export async function getBusinessAccount(business_id: string) {
 	};
 }
 
-export async function postBusinessAccount(postData: BusninessAccountDto) {
-	const { error } = await supabase
-  	.from('BusinessAccount')
-  	.insert(postData);
-	if(error){
-		console.error("error")
-		return;
+export async function postBusinessAccount(postData: BusninessAccountDto){
+	const { data, error } = await supabase
+		.from('BusinessAccount')
+		.insert(postData)
+		.select();
+	if (error) {
+		console.error("Error posting business account:", error);
+		throw error;
 	}
+	
+	return data;
 }

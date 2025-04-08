@@ -18,8 +18,10 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../../Components";
 import styles from "./OrgAccountForm.module.scss";
-import { SUPPORTED_LANGUAGES } from "../../../Forms/supported-languages";
-import { formatSelectOptions, Select } from "../../../Components/Select/Select";
+import {
+	formatSelectOptionsWithLabels,
+	Select,
+} from "../../../Components/Select/Select";
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { postBusinessAccount } from "../../../api/business-account-api/public-business-account-api";
@@ -59,6 +61,7 @@ export function OrgAccountForm() {
 	});
 
 	const onSubmit: SubmitHandler<orgAccountFormType> = (data) => {
+		console.log(data);
 		create.mutate(data);
 	};
 
@@ -112,39 +115,39 @@ export function OrgAccountForm() {
 		}
 	};
 
-	const { data: countrVat } = useQuery({
+	const { data: countrVat, isLoading: loadingCountryVat } = useQuery({
 		queryKey: ["coutry-vat"],
 		queryFn: getCountryVat,
 	});
 
-	const { data: languages } = useQuery({
+	const { data: languages, isLoading: loadingLanguages } = useQuery({
 		queryKey: ["languages"],
 		queryFn: getLanguages,
 	});
 
+		useEffect(() => {
+		if (countrVat?.data && countrVat.data?.length > 0) {
+			// Just set the country value, not the formatted string
+			orgAccountForm.setValue("country", countrVat.data[0].country, {
+				shouldDirty: true,
+				shouldTouch: true,
+				shouldValidate: true,
+			});
+		}
+	}, [countrVat, orgAccountForm]);
+
 	useEffect(() => {
 		if (languages?.data && languages.data?.length > 0) {
-		  // Set the field as dirty and touched to trigger validation indicators
-		  orgAccountForm.setValue('language', languages.data[0].language, {
-			shouldDirty: true,
-			shouldTouch: true,
-			shouldValidate: true
-		  });
+			// Set the field as dirty and touched to trigger validation indicators
+			orgAccountForm.setValue("language", languages.data[0].language, {
+				shouldDirty: true,
+				shouldTouch: true,
+				shouldValidate: true,
+			});
 		}
-	  }, [languages, orgAccountForm]);
-	 
-	  useEffect(() => {
-		if (countrVat?.data && countrVat.data?.length > 0) {
-		  // Format the country value the same way as in the select options
-		  const formattedCountry = `${countrVat.data[0].country} - VAT${countrVat.data[0].vat}%`;
-		  
-		  orgAccountForm.setValue('country', formattedCountry, {
-			shouldDirty: true,
-			shouldTouch: true,
-			shouldValidate: true
-		  });
-		}
-	  }, [countrVat, orgAccountForm]);
+	}, [languages, orgAccountForm]);
+
+
 	return (
 		<form
 			onSubmit={orgAccountForm.handleSubmit(onSubmit, onError)}
@@ -161,23 +164,31 @@ export function OrgAccountForm() {
 										{"Country"}
 									</label>
 								)}
-
 								<Controller
 									name="country"
 									control={orgAccountForm.control}
 									rules={{ required: true }}
-									defaultValue="Norway"
-									render={({ field }) => (
-										<Select
-											options={formatSelectOptions(
-												countrVat?.data?.map(
-													(item) => `${item.country} - VAT${item.vat}%`,
-												) || [],
-											)}
-											{...field}
-										/>
-									)}
+									render={({ field }) =>
+										loadingCountryVat ? (
+											// Show loading state or placeholder
+											<Select {...field}/>
+										) : (
+											<Select
+												options={
+													countrVat?.data
+														? formatSelectOptionsWithLabels(
+																countrVat.data,
+																(item) => item.country,
+																(item) => `${item.country} - VAT${item.vat}%`,
+															)
+														: []
+												}
+												{...field}
+											/>
+										)
+									}
 								/>
+
 								{validationIndicator("country")}
 							</div>
 						</td>
@@ -310,20 +321,31 @@ export function OrgAccountForm() {
 										{"Language"}
 									</label>
 								)}
-
 								<Controller
 									name="language"
 									control={orgAccountForm.control}
 									rules={{ required: true }}
-									render={({ field }) => (
-										<Select
-											options={formatSelectOptions(
-												languages?.data?.map((item) => item.language) || [],
-											)}
-											{...field}
-										/>
-									)}
+									render={({ field }) =>
+										loadingLanguages ? (
+											// Show loading state or placeholder
+											<Select {...field}/>
+										) : (
+											<Select
+												options={
+													languages?.data
+														? formatSelectOptionsWithLabels(
+																languages.data,
+																(item) => item.language,
+																(item) => item.language,
+															)
+														: []
+												}
+												{...field}
+											/>
+										)
+									}
 								/>
+
 								{validationIndicator("language")}
 							</div>
 						</td>

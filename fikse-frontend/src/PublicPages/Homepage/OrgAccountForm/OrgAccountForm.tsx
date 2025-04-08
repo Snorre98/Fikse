@@ -44,7 +44,7 @@ type orgAccountFormType = z.infer<typeof orgAccountFormSchema>;
 
 export function OrgAccountForm() {
 	const initialData: Partial<orgAccountFormType> = {
-		country: "Norway",
+		country: "Country",
 		org_number: "",
 		business_name: "",
 		person_fullname: "",
@@ -125,29 +125,6 @@ export function OrgAccountForm() {
 		queryFn: getLanguages,
 	});
 
-		useEffect(() => {
-		if (countrVat?.data && countrVat.data?.length > 0) {
-			// Just set the country value, not the formatted string
-			orgAccountForm.setValue("country", countrVat.data[0].country, {
-				shouldDirty: true,
-				shouldTouch: true,
-				shouldValidate: true,
-			});
-		}
-	}, [countrVat, orgAccountForm]);
-
-	useEffect(() => {
-		if (languages?.data && languages.data?.length > 0) {
-			// Set the field as dirty and touched to trigger validation indicators
-			orgAccountForm.setValue("language", languages.data[0].language, {
-				shouldDirty: true,
-				shouldTouch: true,
-				shouldValidate: true,
-			});
-		}
-	}, [languages, orgAccountForm]);
-
-
 	return (
 		<form
 			onSubmit={orgAccountForm.handleSubmit(onSubmit, onError)}
@@ -171,24 +148,24 @@ export function OrgAccountForm() {
 									render={({ field }) =>
 										loadingCountryVat ? (
 											// Show loading state or placeholder
-											<Select {...field}/>
+											<Select {...field} />
 										) : (
 											<Select
-												options={
-													countrVat?.data
+												options={[
+													{ value: "Country", label: "Country" }, // Placeholder option
+													...(countrVat?.data
 														? formatSelectOptionsWithLabels(
 																countrVat.data,
 																(item) => item.country,
 																(item) => `${item.country} - VAT${item.vat}%`,
 															)
-														: []
-												}
+														: []),
+												]}
 												{...field}
 											/>
 										)
 									}
 								/>
-
 								{validationIndicator("country")}
 							</div>
 						</td>
@@ -328,18 +305,19 @@ export function OrgAccountForm() {
 									render={({ field }) =>
 										loadingLanguages ? (
 											// Show loading state or placeholder
-											<Select {...field}/>
+											<Select {...field} />
 										) : (
 											<Select
-												options={
-													languages?.data
+												options={[
+													{ value: "Language", label: "Language" }, // Placeholder option
+													...(languages?.data
 														? formatSelectOptionsWithLabels(
 																languages.data,
 																(item) => item.language,
 																(item) => item.language,
 															)
-														: []
-												}
+														: []),
+												]}
 												{...field}
 											/>
 										)

@@ -7,7 +7,12 @@ import { validateNorwegianOrgNumber } from "./utils";
 // - `^\+47[2-9][0-9]{7,8}$`
 const PHONENUMBER_REGEX = /^(0047|\+47|47)?[2-9]\d{7}$/;
 
-export const COUNTRY = z.string().min(1, "Country is required");
+export const COUNTRY = z
+  .string()
+  .min(1, "Country is required")
+  .refine((val) => val !== "Country", {
+    message: "Please select a country"
+  });
 export const ORG_NR = z
 	.string()
 	.min(1, "Organization number is required")
@@ -23,4 +28,9 @@ export const EMAIL = z
 	.min(1, "Email is required")
 	.email("Invalid email format");
 
-export const LANGUAGE = z.string().min(1, "Language is required");
+	export const LANGUAGE = z
+	.string()
+	.min(1, "Language is required")
+	.refine((val) => val !== "Language", {
+	  message: "Please select a language"
+	});

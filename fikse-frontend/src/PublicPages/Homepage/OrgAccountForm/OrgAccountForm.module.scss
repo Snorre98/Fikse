@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    background-color: rgb(253, 247, 209);
+    background-color: rgb(231, 231, 231);
     overflow: hidden;
 }
 
@@ -64,10 +64,6 @@
     display: flex;
     flex-direction: row;
     padding: 0.10rem;
-}
-
-.input_icon {
-    background-color: rgb(253, 247, 209);
 }
 
 .input_label {

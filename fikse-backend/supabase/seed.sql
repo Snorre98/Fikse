@@ -1,3 +1,26 @@
+INSERT INTO "public"."SupportedCountries"
+    (country)
+VALUES
+    ('Norway'),
+    ('England'),
+    ('Sweden'),
+    ('Denmark'),
+    ('Finland'),
+    ('Germany')
+ON CONFLICT (country) DO NOTHING;
+
+INSERT INTO "public"."SupportedLanguages"
+    (language)
+VALUES
+    ('Norwegian'),
+    ('English'),
+    ('Swedish'),
+    ('Danish'),
+    ('Finnish'),
+    ('German')
+ON CONFLICT (language) DO NOTHING;
+
+
 -- Insert into CountryVAT table first (due to foreign key constraint)
 INSERT INTO "public"."CountryVAT"
     (country, vat)

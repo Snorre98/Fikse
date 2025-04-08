@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { validateNorwegianOrgNumber } from "./utils";
-import { SUPPORTED_LANGUAGES } from "./supported-languages";
 
 // https://github.com/mnestorov/regex-patterns#norway
 // - `^NO\d{9}MVA$`
@@ -24,4 +23,4 @@ export const EMAIL = z
 	.min(1, "Email is required")
 	.email("Invalid email format");
 
-export const LANGUAGE = z.enum(SUPPORTED_LANGUAGES, {errorMap: () => ({message: "Select a supported language"})})
+export const LANGUAGE = z.string().min(1, "Language is required");

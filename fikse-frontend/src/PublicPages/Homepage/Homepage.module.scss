@@ -1,3 +1,5 @@
+@use '../../mixins' as *;
+
 .modal_form_wrapper {
     height: 100%;
 }
@@ -16,4 +18,11 @@
 
 .scale {
     transform: scale(2);
+}
+
+@include for-mobile-only {
+    .scale{
+        transform: scale(1);
+    }
+
 }

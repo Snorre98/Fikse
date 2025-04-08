@@ -17,23 +17,44 @@ To run the project you have to have Node (it works for me with Node.js v22.14.0)
 
 ### Frontend
 
-1) Navigate to `📁fikse-frontend`
-2) Run `npm install`
 
-Now to start the development server run `npm run dev`
+##### Navigate to `📁fikse-frontend`
+##### Run 
+``` bash
+npm install
+```
+
+##### Now to start the development server run
+``` bash
+npm run dev
+```
 
 ### Backend
 
 > As mentioned the backend requires Docker. I have been using [Docker Desktop integrated with WSL](https://docs.docker.com/desktop/features/wsl/).
 
-1) Navigate to `📁fikse-backend`
-2) Run `npm install`
+##### Navigate to `📁fikse-backend`
+##### Run 
+``` bash
+npm install
+```
 
-Now to start a local Supabase development instance run `npx supabase start`. To stop the service run `npx supabase stop`.
+> Now to start a local Supabase development instance run `npx supabase start`. To stop the service run `npx supabase stop`.
 
-#### Important ‼️
+##### To create database tables run 
+``` bash
+npx supabase db reset
+```
 
-You need to create a couple of tables in the database. This can be done in the supabase dashboard, accessable here http://127.0.0.1:54323/project/default when supabase is running localy.
+<!-- #### Important ‼️
+
+You need to create a couple of tables in the database.  -->
+
+
+<!-- 
+
+
+This can be done in the supabase dashboard, accessable here http://127.0.0.1:54323/project/default when supabase is running localy.
 
 
 First you need to create some Enum types, as shown in the image bellow:
@@ -102,6 +123,7 @@ The arrows show where you can either disable RLS or create policies. Again, for 
 
 ![alt text](./docs/assets/rls-4.png)
 
+ -->
 
 # Database definition diagram
 

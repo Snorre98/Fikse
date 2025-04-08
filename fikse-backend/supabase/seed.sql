@@ -1,14 +1,3 @@
-INSERT INTO "public"."SupportedCountries"
-    (country)
-VALUES
-    ('Norway'),
-    ('England'),
-    ('Sweden'),
-    ('Denmark'),
-    ('Finland'),
-    ('Germany')
-ON CONFLICT (country) DO NOTHING;
-
 INSERT INTO "public"."SupportedLanguages"
     (language)
 VALUES
